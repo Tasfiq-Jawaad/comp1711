@@ -1,0 +1,16 @@
+16,The Beatles,Let it Be,1970
+18,Bee Gees,Stayin' Alive,1978
+23,George Harrison,My Sweet Lord,1971
+24,Abba,Dancing Queen,1976
+30,John Travolta & Olivia Newton-John,You're the One That I Want,1978
+37,The Village People,YMCA,1978
+40,John Lennon,Imagine,1971
+46,Queen,Bohemian Rhapsody,1976
+56,The Rolling Stones,Angie,1973
+57,Mungo Jerry,In the Summertime,1970
+61,Carl Douglas,Kung Fu Fighting,1974
+80,Terry Jacks,Seasons in the Sun,1974
+83,Blondie,Heart of Glass,1979
+86,Tony Orlando & Dawn,Tie a Yellow Ribbon 'round the Old Oak Tree,1973
+88,Shocking Blue,Venus,1970
+89,Eagles,Hotel California,1977
