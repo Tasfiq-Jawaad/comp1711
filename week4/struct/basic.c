@@ -1,14 +1,15 @@
 #include <stdio.h>
 
-struct student {
+typedef unsigned char mark_t;
+typedef struct {
     char name [20];
     // the last index is reserved for '0' or '/0'
     char student_id [11]; //assuming 10 digits
-    unsigned marks; //?
-};
+    unsigned char marks; //?
+} student;
 
 int main () {
-    struct student new_student = {
+    student new_student = {
         // .<fieldname> is a designator
         .name = "Name Surname abcdefg",
         .student_id = "28932123",
@@ -28,7 +29,6 @@ int main () {
 
     }
 
-    // asdf jkl; asdf jkl; a s d f j k l ; a s d f j k l ; a j s k f l a j s k d l f ; a ; l s d k j f a s d f j k l ; A J S K D L F : 
 
     return 0;
 }
