@@ -83,14 +83,15 @@ void tokeniseRecord(const char *input, const char *delimiter,
  * @param file  
  * @return 
  */
-void collectData(char line[], char bufferSize, FILE *file, FITNESS_DATA data[], int * record, float * mean)
+float collectData(char line[], char bufferSize, FILE *file, FITNESS_DATA data[], int * record)
 {
     int totalSteps=0;
+    float mean = 0;
 
     while (fgets(line, buffer_size, file) != NULL)
     {
         //collecting the total number of record
-        *record++;
+        ++*record;
 
         char tempDate[11];
         char tempTime[6];
@@ -119,7 +120,9 @@ void collectData(char line[], char bufferSize, FILE *file, FITNESS_DATA data[], 
 
     }
 
-    *mean = totalSteps / *record;
+    mean = totalSteps / *record;
+
+    return mean;
 }
 
 

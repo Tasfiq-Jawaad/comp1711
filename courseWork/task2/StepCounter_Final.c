@@ -16,7 +16,6 @@ int main() {
     int *r = &record;
 
     float mean = 0;
-    float *m = &mean;
 
     char line[buffer_size];
     char filename[buffer_size];
@@ -38,7 +37,7 @@ int main() {
             fgets(line, buffer_size, stdin);
             sscanf(line, " %s ", filename);
             FILE *file = open_file(filename, "r");
-            collectData(line, buffer_size, file, data, r, m);
+            mean = collectData(line, buffer_size, file, data, r);
             // while (fgets(line, buffer_size, input))
             // {
             //     // split up the line and store it in the right place
@@ -55,7 +54,7 @@ int main() {
 
         case 'B':
         case 'b':
-        printf("%d", record);
+            printf("Total records: %d\n", record);
             // counter = 0;
             // while (fgets(line, buffer_size, input))
             // {
