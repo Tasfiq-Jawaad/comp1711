@@ -1,22 +1,22 @@
 #include "FitnessDataStruct.h"
 
-// Struct moved to header file
 
-// Define any additional variables here
-// Global variables for filename and FITNESS_DATA array
-
-
-// This is your helper function. Do not change it in any way.
-// Inputs: character array representing a row; the delimiter character
-// Ouputs: date character array; time character array; steps character array
-
-
-
-
-
-// Complete the main function
 int main() {
-    FITNESS_DATA data[100];
+    FITNESS_DATA data[4];
+    // 0 for the fewest steps
+    data[0].steps = 0;
+    // 1 for the largest steps
+    data[1].steps = 0;
+    // 2 for the logest period start
+    data[2].steps = 0;
+    // 3 for the longest period end
+    data[3].steps = 0;
+
+    int record = 0;
+    int *r = &record;
+
+    float mean = 0;
+    float *m = &mean;
 
     char line[buffer_size];
     char filename[buffer_size];
@@ -38,7 +38,7 @@ int main() {
             fgets(line, buffer_size, stdin);
             sscanf(line, " %s ", filename);
             FILE *file = open_file(filename, "r");
-
+            collectData(line, buffer_size, file, data, r, m);
             // while (fgets(line, buffer_size, input))
             // {
             //     // split up the line and store it in the right place
@@ -55,6 +55,7 @@ int main() {
 
         case 'B':
         case 'b':
+        printf("%d", record);
             // counter = 0;
             // while (fgets(line, buffer_size, input))
             // {

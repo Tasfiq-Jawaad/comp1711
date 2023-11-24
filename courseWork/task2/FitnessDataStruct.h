@@ -22,6 +22,24 @@ typedef struct {
 } FITNESS_DATA;
 
 /**
+ * @brief Opens the file in the correct mode
+ *
+ * @param filename the name of the file to open
+ * @param mode the mode (r/w/a/r+/w+/a+)
+ * @return FILE* The file object to store the opened file in.
+ */
+FILE *open_file(char filename[], char mode[]) {
+    FILE *file = fopen(filename, mode);
+    if (file == NULL) {
+        perror("");
+        exit(1);
+    }
+	else
+		printf("success");
+    return file;
+}
+
+/**
  * @brief tokeniseRecord function
  *        
  *
@@ -58,22 +76,54 @@ void tokeniseRecord(const char *input, const char *delimiter,
 }
 
 /**
- * @brief Opens the file in the correct mode
+ * @brief collects all the data
  *
- * @param filename the name of the file to open
- * @param mode the mode (r/w/a/r+/w+/a+)
- * @return FILE* The file object to store the opened file in.
+ * @param line the line
+ * @param bufferSize 
+ * @param file  
+ * @return 
  */
-FILE *open_file(char filename[], char mode[]) {
-    FILE *file = fopen(filename, mode);
-    if (file == NULL) {
-        perror("");
-        exit(1);
+void collectData(char line[], char bufferSize, FILE *file, FITNESS_DATA data[], int * record, float * mean)
+{
+    int totalSteps=0;
+
+    while (fgets(line, buffer_size, file) != NULL)
+    {
+        //collecting the total number of record
+        *record++;
+
+        char tempDate[11];
+        char tempTime[6];
+        char tempSteps[8];
+        int tempStepsInt;
+
+        tokeniseRecord(line, ",", tempDate, tempTime, tempSteps);
+        tempStepsInt = atoi(tempSteps);
+
+        totalSteps += tempStepsInt;
+
+        if(tempStepsInt<data[0].steps)
+        {
+            data[0].steps = tempStepsInt;
+            strcpy(data[0].date, tempDate);
+            strcpy(data[0].time, tempTime);
+        }
+
+        if(tempStepsInt>data[1].steps)
+        {
+            data[1].steps = tempStepsInt;
+            strcpy(data[1].date, tempDate);
+            strcpy(data[1].time, tempTime);
+        }
+
+
     }
-	else
-		printf("success");
-    return file;
+
+    *mean = totalSteps / *record;
 }
+
+
+
 
 /**
  * @brief prints all the options
