@@ -54,7 +54,7 @@ int main() {
 
         case 'D':
         case 'd':
-            printf("Largest steps: %s %s\n", data[0].date, data[0].time);
+            printf("Largest steps: %s %s\n", data[1].date, data[1].time);
             break;
 
         case 'E':
