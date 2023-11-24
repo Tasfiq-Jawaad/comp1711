@@ -31,11 +31,9 @@ typedef struct {
 FILE *open_file(char filename[], char mode[]) {
     FILE *file = fopen(filename, mode);
     if (file == NULL) {
-        perror("");
+        perror("Error: could not open file\n");
         exit(1);
     }
-	else
-		printf("success");
     return file;
 }
 
@@ -79,14 +77,22 @@ void tokeniseRecord(const char *input, const char *delimiter,
  * @brief collects all the data
  *
  * @param line the line
- * @param bufferSize 
- * @param file  
+ * @param bufferSize the buffer size
+ * @param file the file pointer
  * @return 
  */
 float collectData(char line[], char bufferSize, FILE *file, FITNESS_DATA data[], int * record)
 {
     int totalSteps=0;
-    float mean = 0;
+
+    int tempLongestPeriod= 0, longestPeriod = 0;
+
+    char tempLongestStartDate [11];
+    char tempLongestStartTime [6];
+    int longestStepStarted = 0;
+
+    char tempLongestEndDate [11];
+    char tempLongestEndTime [6];
 
     while (fgets(line, buffer_size, file) != NULL)
     {
@@ -96,12 +102,13 @@ float collectData(char line[], char bufferSize, FILE *file, FITNESS_DATA data[],
         char tempDate[11];
         char tempTime[6];
         char tempSteps[8];
+        
         int tempStepsInt;
 
         tokeniseRecord(line, ",", tempDate, tempTime, tempSteps);
         tempStepsInt = atoi(tempSteps);
-
         totalSteps += tempStepsInt;
+        
 
         if(tempStepsInt<data[0].steps)
         {
@@ -117,11 +124,57 @@ float collectData(char line[], char bufferSize, FILE *file, FITNESS_DATA data[],
             strcpy(data[1].time, tempTime);
         }
 
+        if(tempStepsInt>500 && longestStepStarted == 1)
+        {
+            strcpy(tempLongestEndDate, tempDate);
+            strcpy(tempLongestEndTime, tempTime);
+            tempLongestPeriod += 15;
+        }
 
+        else if(tempStepsInt>500 && longestStepStarted == 0)
+        {
+            longestStepStarted = 1;
+
+            strcpy(tempLongestEndDate, tempDate);
+            strcpy(tempLongestEndTime, tempTime);
+            
+            tempLongestPeriod += 15;
+        }
+
+        else if(tempStepsInt<=500 && longestStepStarted == 1)
+        {
+            if(tempLongestPeriod>longestPeriod)
+            {
+                strcpy(data[2].date, tempLongestStartDate);
+                strcpy(data[2].time, tempLongestStartTime);
+                
+                strcpy(data[3].date, tempLongestEndDate);
+                strcpy(data[3].time, tempLongestEndTime);
+                longestPeriod = tempLongestPeriod;
+                
+            }
+            tempLongestPeriod = 0;
+            longestStepStarted = 0;
+        }
+        else
+        {
+            strcpy(tempLongestStartDate, tempDate);
+            strcpy(tempLongestStartTime, tempTime);
+        }
     }
 
-    mean = totalSteps / *record;
+    if(tempLongestPeriod>longestPeriod)
+        {
+            strcpy(data[2].date, tempLongestStartDate);
+            strcpy(data[2].time, tempLongestStartTime);
+            
+            strcpy(data[3].date, tempLongestEndDate);
+            strcpy(data[3].time, tempLongestEndTime);
+            longestPeriod = tempLongestPeriod;
+            
+        }
 
+    float mean = (float) totalSteps / *record;
     return mean;
 }
 
@@ -143,87 +196,4 @@ int printOption()
     printf("Q: Exit\n");
 }
 
-// /**
-//  * @brief Reads the data from the input file into an array of structs
-//  *
-//  * @param inputFile the open file object
-//  * @param dataArray the array of readings
-//  * @return int Returns the number of readings from the file
-//  */
-// int read_file(FILE *inputFile, reading *dataArray)
-// {
-//     // to do
-// }
-
-// /**
-//  * @brief Checks that there was data for each part of each reading in the file
-//  *
-//  * @param dataArray The array of data from the file
-//  * @param numReadings The number of readings in the array
-//  * @return int Return 0 if there are no errors, 1 if you find an error.
-//  */
-// int data_checker(reading *dataArray, int numReadings)
-// {
-//     // to do
-// }
-
 #endif // FITNESS_DATA_STRUCT_H
-
-
-
-// SUGGESTED FUNCTIONS
-
-
-
-
-
-
-
-
-// /**
-//  * @brief Calculates and returns the mean of the readings in the array
-//  * 
-//  * @param dataArray The array of data from the file
-//  * @param numReadings The number of readings in the array
-//  * @return float The mean of the readings.
-//  */
-// float find_mean(reading* dataArray, int numReadings)
-// {
-//     // to do
-// }
-
-// /**
-//  * @brief Finds and returns the highest blood iron reading
-//  * 
-//  * @param dataArray The array of data from the file
-//  * @param numReadings The number of readings in the array
-//  * @return float The highest blood iron reading
-//  */
-// float find_highest(reading* dataArray, int numReadings)
-// {
-//     // to do
-// }
-
-// /**
-//  * @brief Finds and returns the lowest blood iron reading
-//  * 
-//  * @param dataArray The array of data from the file
-//  * @param numReadings The number of readings in the array
-//  * @return float The lowest blood iron reading
-//  */
-// float find_lowest(reading* dataArray, int numReadings)
-// {
-//     // to do
-// }
-
-
-// /**
-//  * @brief Ask the user for the month to find, and then print out all readings containing that month.
-//  * 
-//  * @param dataArray The array of data from the file
-//  * @param numReadings The number of readings in the array
-//  */
-// void monthly_iron(reading* dataArray, int numReadings)
-// {
-//     // to do
-// }
