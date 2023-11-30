@@ -135,6 +135,9 @@ float collectData(char line[], char bufferSize, FILE *file, FITNESS_DATA data[],
         {
             longestStepStarted = 1;
 
+            strcpy(tempLongestStartDate, tempDate);
+            strcpy(tempLongestStartTime, tempTime);
+
             strcpy(tempLongestEndDate, tempDate);
             strcpy(tempLongestEndTime, tempTime);
             
@@ -156,11 +159,11 @@ float collectData(char line[], char bufferSize, FILE *file, FITNESS_DATA data[],
             tempLongestPeriod = 0;
             longestStepStarted = 0;
         }
-        else
-        {
-            strcpy(tempLongestStartDate, tempDate);
-            strcpy(tempLongestStartTime, tempTime);
-        }
+        // else
+        // {
+        //     strcpy(tempLongestStartDate, tempDate);
+        //     strcpy(tempLongestStartTime, tempTime);
+        // }
     }
 
     if(tempLongestPeriod>longestPeriod)
