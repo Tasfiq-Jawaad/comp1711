@@ -13,12 +13,25 @@ typedef struct {
 int tokeniseRecord(char *record, char delimiter, char *date, char *time, char *steps) {
     char *ptr = strtok(record, &delimiter);
     if (ptr != NULL) {
+        char *checkDate = strstr(ptr, "-");
+        if(checkDate){
+
+            checkDate = strstr(&checkDate[1], "-");
+            if(!checkDate){
+                return 1;
+            }
+        }
         strcpy(date, ptr);
         ptr = strtok(NULL, &delimiter);
-        if (ptr != NULL && strlen(ptr)!= 2) {
+        if (ptr != NULL) {
+            char *checkTime = strstr(ptr, ":");
+            if(!checkDate){
+                return 1;
+            }
             strcpy(time, ptr);
+
             ptr = strtok(NULL, &delimiter);
-            if (ptr != NULL && strlen(ptr) >2) {
+            if (ptr != NULL && (strstr(ptr, "0")||strstr(ptr, "1")||strstr(ptr, "2")||strstr(ptr, "3")||strstr(ptr, "4")||strstr(ptr, "5")||strstr(ptr, "6")||strstr(ptr, "7")||strstr(ptr, "8")||strstr(ptr, "9"))) {
                 strcpy(steps, ptr);
                 return 0;
             }
@@ -27,19 +40,13 @@ int tokeniseRecord(char *record, char delimiter, char *date, char *time, char *s
             }
             
         }
-        else{
-                return 1;
-            }
     }
-    else{
-            return 1;
-        }
 }
 
 FILE *open_file(char filename[], char mode[]) {
     FILE *file = fopen(filename, mode);
     if (file == NULL) {
-        perror("");
+        perror("Error: invalid file");
         exit(1);
     }
     return file;
@@ -112,6 +119,10 @@ int main() {
 
     bubbleSort(data, dataCounter);    
 
+    for(int i = dataCounter-1; i>=0; i--){
+        printf("%s\t%s\t%d\n", data[i].date, data[i].time, data[i].steps);
+    }
+
     char ext[] = ".tsv";
 
     int newSize = strlen(filename) + strlen(ext) +1;
@@ -121,7 +132,7 @@ int main() {
 
     FILE *newFile = open_file(newFileName, "w");
 
-    for(int i = 0; i<dataCounter; i++){
+    for(int i = dataCounter-1; i>=0; i--){
         fprintf(file, "%s\t%s\t%d\n", data[i].date, data[i].time, data[i].steps);
     }
 
